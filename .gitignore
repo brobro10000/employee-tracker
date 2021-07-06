@@ -1,3 +1,5 @@
+#SQLInit
+data/private/
 # Logs
 logs
 *.log
