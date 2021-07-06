@@ -57,3 +57,8 @@ test('check  getId', () => {
 
     expect(department.getId()).toBe(1)
 });
+test('check  getDepartmentId', () => {
+    const department = new Department(1,"R&D")
+
+    expect(department.getDepartmentId()).toBe(1)
+});
