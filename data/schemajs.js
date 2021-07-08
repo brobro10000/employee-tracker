@@ -11,6 +11,7 @@ function initializeDatabase(databaseName) {
     sql = `USE ${databaseName};`
     queryReturn(sql, `${databaseName} Initialized`)
 }
+
 function dropExistingTables(tables) {
     let sql = ``
     for (var i = 0; i < tables.length;) {
@@ -18,15 +19,17 @@ function dropExistingTables(tables) {
         queryReturn(sql, `Cleared Table: ${sql.split(' ')[4].split(';')[0]}`)
     }
 }
+
 function queryReturn(sql, message) {
     database.query(sql, function (err, results) {
         if (err) throw err;
-        if(message == 'output'){
+        if (message == 'output') {
             console.table(results)
         } else
-        console.log(`${message}`)
+            console.log(`${message}`)
     });
 }
+
 function createDepartmentTable() {
     var sql = `CREATE TABLE departments (
         id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -35,6 +38,7 @@ function createDepartmentTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
+
 function createRoleTable() {
     var sql = `CREATE TABLE roles (
         id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -46,6 +50,7 @@ function createRoleTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
+
 function createEmployeeTable() {
     var sql = `CREATE TABLE employees (
         id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -59,9 +64,10 @@ function createEmployeeTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
-function createAllTables(){
+
+function createAllTables() {
     createDepartmentTable();
     createRoleTable();
     createEmployeeTable()
 }
-module.exports = { databaseName, tables, initializeDatabase, dropExistingTables,createAllTables,queryReturn }
+module.exports = { databaseName, tables, initializeDatabase, dropExistingTables, createAllTables, queryReturn }
