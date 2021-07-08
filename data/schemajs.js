@@ -1,6 +1,7 @@
 const database = require('./connection');
 const tables = ['employees', 'roles', 'departments']
 const databaseName = 'employeeroster'
+const cTable = require('console.table');
 
 function initializeDatabase(databaseName) {
     sql = `DROP DATABASE IF EXISTS ${databaseName};`
@@ -21,7 +22,7 @@ function queryReturn(sql, message) {
     database.query(sql, function (err, results) {
         if (err) throw err;
         if(message == 'output'){
-            console.log(results)
+            console.table(results)
         } else
         console.log(`${message}`)
     });
@@ -58,5 +59,9 @@ function createEmployeeTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
-
-module.exports = { databaseName, tables, initializeDatabase, dropExistingTables, createDepartmentTable, createRoleTable, createEmployeeTable,queryReturn }
+function createAllTables(){
+    createDepartmentTable();
+    createRoleTable();
+    createEmployeeTable()
+}
+module.exports = { databaseName, tables, initializeDatabase, dropExistingTables,createAllTables,queryReturn }

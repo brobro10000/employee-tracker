@@ -36,7 +36,8 @@ function populateDepartmentArray(sql) {
         if (err) throw err;
         for (var i = 0; i < results.length; i++) {
             let department = new Department(results[i].id, results[i].department_name)
-            departmentArray.push(department)
+            // departmentArray.push(department)
+            pushData(departmentArray,department)
         }
         // console.table(results)
         // console.table(departmentArray)
@@ -64,7 +65,6 @@ function populateRole(title, salary, department_id) {
 function populateRoleArray(sql) {
     database.query(sql, function (err, results) {
         if (err) throw err;
-        var j = 0;
         for (var i = 0; i < results.length; i++) {
             retrieveDepartmentById(results[i].department_id,results[i],i,results.length-1)
         }
@@ -76,8 +76,8 @@ function retrieveDepartmentById(id,passedResults,i,length){
     database.query(sql,function(err,results){
         if(err) throw err;
         let role = new Role(passedResults.id,results[0].department_name,passedResults.title,passedResults.salary,passedResults.department_id)
-        roleArray.push(role)
-        // pushData(role)
+        // roleArray.push(role)
+        pushData(roleArray,role)
         if(i == length){
         // console.table(roleArray)
         }
@@ -120,17 +120,25 @@ function retrieveRoleById(passedResults) {
                 }
             }
             let employee = new Employee(passedResults[i].id,name,title,salary,department_id,passedResults[i].first_name,passedResults[i].last_name,passedResults[i].role_id,passedResults[i].manager_id)
-            employeeArray.push(employee)
+            // employeeArray.push(employee)
+            pushData(employeeArray,employee)
         }
         console.table(employeeArray)
     })
 }
-function pushData(data){
-    roleArray.push(data)
+
+function populateAllTables(department_name,title,salary,department_id,first_name,last_name,role_id,manager_id) {
+    populateDepartment(department_name);
+    populateRole(title,salary,department_id)
+    populateEmployee(first_name,last_name,role_id,manager_id)
+}
+
+function pushData(arr,data){
+    arr.push(data)
 }
 
 function showQuery(table_name) {
     sql = `SELECT * FROM ${table_name}`
     queryReturn(sql, `output`)
 }
-module.exports = { departmentArray, roleArray,department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateDepartment, populateRole, populateEmployee, retrieveDepartmentById ,showQuery }
+module.exports = {department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery }
