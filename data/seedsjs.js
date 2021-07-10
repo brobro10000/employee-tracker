@@ -73,6 +73,7 @@ function populateRoleArray(sql) {
         }
         // console.table(results)
     });
+    // console.table(roleArray)
 }
 
 function retrieveDepartmentById(id, passedResults, i, length) {
@@ -83,9 +84,10 @@ function retrieveDepartmentById(id, passedResults, i, length) {
         // roleArray.push(role)
         pushData(roleArray, role)
         if (i == length) {
-            // console.table(roleArray)
+            console.table(roleArray)
         }
     })
+    // console.table(roleArray)
 }
 
 function populateEmployee(first_name, last_name, role_id, manager_id) {
@@ -129,7 +131,7 @@ function retrieveRoleById(passedResults) {
             // employeeArray.push(employee)
             pushData(employeeArray, employee)
         }
-        console.table(employeeArray)
+        // console.table(employeeArray)
     })
 }
 

@@ -1,7 +1,6 @@
 const database = require('./connection');
 const tables = ['employees', 'roles', 'departments']
 const databaseName = 'employeeroster'
-const cTable = require('console.table');
 
 function initializeDatabase(databaseName) {
     sql = `DROP DATABASE IF EXISTS ${databaseName};`
@@ -68,6 +67,8 @@ function createEmployeeTable() {
 function createAllTables() {
     createDepartmentTable();
     createRoleTable();
-    createEmployeeTable()
+    createEmployeeTable();
 }
 module.exports = { databaseName, tables, initializeDatabase, dropExistingTables, createAllTables, queryReturn }
+
+// database.end()
