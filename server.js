@@ -6,4 +6,3 @@ database.connect(err => {
   initialPrompt()
   console.log('Database connected.');
 });
-

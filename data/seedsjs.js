@@ -12,11 +12,16 @@ const first_name = ['"Gayle"', '"Porcius"', '"Gul"', '"Rameses"', '"Tybalt"', '"
 const last_name = ['"Aarens"', '"Arias"', '"Oliver"', '"Cecil"', '"Ferrero"', '"Beringer"', '"Radclyffe"', '"McCrae"', '"Kahler"', '"Piatek"', '"Fierro"', '"Pretorius"', '"Tolkien"', '"Vidovic"', '"Tobias"', '"Janowski"', '"Stasiuk"', '"Maric"']
 const role_id = [1, 2, 2, 3, 3, 3, 4, 5, 5, 6, 6, 6, 7, 8, 8, 9, 9, 9]
 const manager_id = ['NULL', 1, 1, 3, 4, 4, 'NULL', 7, 7, 8, 10, 10, 'NULL', 13, 13, 15, 15, 15]
-const departmentArray = []
-const roleArray = []
-const employeeArray = []
+var departmentArray = []
+var  roleArray = []
+var employeeArray = []
 const cTable = require('console.table');
 
+function clearArr() {
+    departmentArray = [];
+    roleArray = [];
+    employeeArray = [];
+}
 function populateDepartment(department_name) {
     sql = `INSERT INTO departments (department_name)
     VALUES `
@@ -83,9 +88,9 @@ function retrieveDepartmentById(id, passedResults, i, length) {
         let role = new Role(passedResults.id, results[0].department_name, passedResults.title, passedResults.salary, passedResults.department_id)
         // roleArray.push(role)
         pushData(roleArray, role)
-        if (i == length) {
-            console.table(roleArray)
-        }
+        // if (i == length) {
+        //     console.table(roleArray)
+        //}
     })
     // console.table(roleArray)
 }
@@ -131,11 +136,12 @@ function retrieveRoleById(passedResults) {
             // employeeArray.push(employee)
             pushData(employeeArray, employee)
         }
-        // console.table(employeeArray)
+        console.table(employeeArray)
     })
 }
 
 function populateAllTables(department_name, title, salary, department_id, first_name, last_name, role_id, manager_id) {
+    clearArr()
     populateDepartment(department_name);
     populateRole(title, salary, department_id)
     populateEmployee(first_name, last_name, role_id, manager_id)
@@ -149,4 +155,4 @@ function showQuery(table_name) {
     sql = `SELECT * FROM ${table_name}`
     queryReturn(sql, `output`)
 }
-module.exports = { department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery }
+module.exports = { department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery,pushData }

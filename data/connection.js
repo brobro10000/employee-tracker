@@ -1,5 +1,15 @@
-const initSQL = require('./private/export');
 
-const database = initSQL()
+const mysql = require('mysql2')
+
+const database = mysql.createConnection({
+    host: 'localhost',
+    // Your MySQL username,
+    user: 'root',
+    // Your MySQL password
+    password: 'root',
+    database: 'employeeroster'
+});
+
+
 //dotenv package
 module.exports = database;

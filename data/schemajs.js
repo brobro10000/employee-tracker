@@ -25,7 +25,7 @@ function queryReturn(sql, message) {
         if (message == 'output') {
             console.table(results)
         } else
-            console.log(`${message}`)
+            console.log(`${message}`)          
     });
 }
 
