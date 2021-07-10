@@ -1,4 +1,5 @@
 const inquirer = require('inquirer')
+const { query } = require('../data/connection')
 const database = require('../data/connection')
 const { response, variableResponse, respond } = require('../data/query')
 const { databaseName, tables, initializeDatabase, dropExistingTables, createAllTables, queryReturn } = require('../data/schemajs')
@@ -140,28 +141,110 @@ function initialPrompt() {
         }
     })
 }
-function addComponent(component){
-    var i=0;
-      component.toLowerCase()=='department' ? i = 0 
-    : component.toLowerCase() == 'role' ? i=1 
-    : component.toLowerCase() == 'employee' ? i = 2 
-    : console.log("ERROR! PLEASE TALK TO THE DATABASE ADMINISTRATOR, YOU SHOULDNT REACH THIS MESSAGE");
+function addComponent(component) {
+    var i = 0;
+    component.toLowerCase() == 'department' ? i = 0
+        : component.toLowerCase() == 'role' ? i = 1
+            : component.toLowerCase() == 'employee' ? i = 2
+                : console.log("ERROR! PLEASE TALK TO THE DATABASE ADMINISTRATOR, YOU SHOULDNT REACH THIS MESSAGE");
 
-    inquirer.prompt(addComponentQuestion[i]).then(data => {
-        if(i == 0){
-            queryData.push(data.databaseAction)
-            queryReturn(respond(queryData),'output')
+    inquirer.prompt(addComponentQuestion[i]).then(passedData => {
+        if (i == 0) {
+            queryData.push(passedData.databaseAction)
+            var variableResponse = `
+            INSERT INTO departments (department_name)
+            VALUES
+            ('${queryData[0]}');`
+            queryReturn(variableResponse, 'output')
+            setTimeout(function () {
+                queryReturn(response[1], 'output')
+            }, 1000)
+            recallPrompt()
         }
-        if(i == 1){
-           respond(data)
+        if (i == 1) {
+            var sql = `SELECT departments.department_name FROM departments;`
+            database.query(sql, function (err, results) {
+                if (err)
+                    throw err
+                var departments = []
+                results.forEach(element => {
+                    departments.push(element.department_name)
+                })
+                const rolePrompt = [
+                    {
+                        type: 'list',
+                        name: 'department',
+                        message: 'What is the department of the new role.',
+                        choices: departments
+                    }
+                ]
+                inquirer.prompt(rolePrompt).then(data => {
+                    const newRoleData = `INSERT INTO roles (title,salary,department_id)
+                VALUES
+                ('${passedData.databaseAction}',${passedData.salary},${departments.indexOf(data.department) + 1})`
+                    queryReturn(newRoleData, 'output')
+                    if (newRoleData) {
+                        queryReturn(response[2], 'output')
+                        recallPrompt()
+                    }
+                })
+            });
         }
-        if(i == 2){
-            respond(data)
+        if (i == 2) {
+            var sql =
+                `SELECT  e.manager_id AS "Manager ID", concat(m.first_name, ' ', m.last_name) AS "Manager", e.id AS Id, concat(e.first_name, ' ', e.last_name) AS Full_Name
+           FROM employees e 
+           LEFT JOIN employees m on e.manager_id = m.id
+           ORDER BY e.id ASC;`
+            database.query(sql, function (err, results) {
+                if (err) throw err;
+                var employeeManager = ["None"]
+                results.forEach(element => {
+                    employeeManager.push(element.Full_Name)
+                })
+                sql = 'SELECT roles.id, title FROM roles'
+                database.query(sql, function (err, results) {
+                    var roles = []
+                    results.forEach(element => {
+                        roles.push(element.title)
+                    })
+                    console.table(roles, employeeManager)
+                    const employeePrompt =
+                        [
+                            {
+                                type: 'list',
+                                name: 'role',
+                                message: 'What is the role of the new employee',
+                                choices: roles
+                            },
+                            {
+                                type: 'list',
+                                name: 'manager',
+                                message: 'Who is the manager of the new employee',
+                                choices: employeeManager
+                            }
+                        ]
+                    inquirer.prompt(employeePrompt).then(data => {
+                        console.log(passedData.databaseAction, passedData.last_name, roles.indexOf(data.role), employeeManager.indexOf(data.manager))
+                        if (data.manager == 'None')
+                            var newEmployeeData =
+                                `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                                 VALUES
+                                ('${passedData.databaseAction}','${passedData.last_name}',${roles.indexOf(data.role) + 1},NULL)`
+                        else
+                            var newEmployeeData =
+                                `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                                 VALUES
+                                ('${passedData.databaseAction}','${passedData.last_name}',${roles.indexOf(data.role) + 1},${employeeManager.indexOf(data.manager)})`
+                            queryReturn(newEmployeeData, 'output')
+                        if(newEmployeeData){
+                            queryReturn(response[0], 'output')
+                            recallPrompt()
+                        }
+                    })
+                })
+            })
         }
-        setTimeout(function(){
-            return initialPrompt()
-        },2000)
     })
-    
 }
 module.exports = { initialPrompt, recallPrompt }
