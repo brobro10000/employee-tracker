@@ -13,7 +13,7 @@ const last_name = ['"Aarens"', '"Arias"', '"Oliver"', '"Cecil"', '"Ferrero"', '"
 const role_id = [1, 2, 2, 3, 3, 3, 4, 5, 5, 6, 6, 6, 7, 8, 8, 9, 9, 9]
 const manager_id = ['NULL', 1, 1, 3, 4, 4, 'NULL', 7, 7, 8, 10, 10, 'NULL', 13, 13, 15, 15, 15]
 var departmentArray = []
-var  roleArray = []
+var roleArray = []
 var employeeArray = []
 const cTable = require('console.table');
 
@@ -42,11 +42,8 @@ function populateDepartmentArray(sql) {
         if (err) throw err;
         for (var i = 0; i < results.length; i++) {
             let department = new Department(results[i].id, results[i].department_name)
-            // departmentArray.push(department)
             pushData(departmentArray, department)
         }
-        // console.table(results)
-        // console.table(departmentArray)
     });
 }
 
@@ -76,9 +73,7 @@ function populateRoleArray(sql) {
         for (var i = 0; i < results.length; i++) {
             retrieveDepartmentById(results[i].department_id, results[i], i, results.length - 1)
         }
-        // console.table(results)
     });
-    // console.table(roleArray)
 }
 
 function retrieveDepartmentById(id, passedResults, i, length) {
@@ -86,13 +81,8 @@ function retrieveDepartmentById(id, passedResults, i, length) {
     database.query(sql, function (err, results) {
         if (err) throw err;
         let role = new Role(passedResults.id, results[0].department_name, passedResults.title, passedResults.salary, passedResults.department_id)
-        // roleArray.push(role)
         pushData(roleArray, role)
-        // if (i == length) {
-        //     console.table(roleArray)
-        //}
     })
-    // console.table(roleArray)
 }
 
 function populateEmployee(first_name, last_name, role_id, manager_id) {
@@ -115,7 +105,6 @@ function populateEmployeeArray(sql) {
     database.query(sql, function (err, results) {
         if (err) throw err;
         retrieveRoleById(results)
-        // console.table(results)
     });
 }
 
@@ -133,7 +122,6 @@ function retrieveRoleById(passedResults) {
                 }
             }
             let employee = new Employee(passedResults[i].id, name, title, salary, department_id, passedResults[i].first_name, passedResults[i].last_name, passedResults[i].role_id, passedResults[i].manager_id)
-            // employeeArray.push(employee)
             pushData(employeeArray, employee)
         }
         console.table(employeeArray)
@@ -155,19 +143,4 @@ function showQuery(table_name) {
     sql = `SELECT * FROM ${table_name}`
     queryReturn(sql, `output`)
 }
-
-// let myPromise = new Promise(function(myResolve, myReject) {
-//     // "Producing Code" (May take some time)
-//     let value = 'roles'
-
-//       myResolve(showQuery(value)); // when successful
-//       myReject();  // when error
-//     });
-    
-//     // "Consuming Code" (Must wait for a fulfilled Promise)
-//     myPromise.then(
-//       function(value) { /* code if successful */ },
-//       function(error) { /* code if some error */ }
-//     );
-
-module.exports = { /*myPromise,*/ department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery,pushData }
+module.exports = { department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery, pushData }

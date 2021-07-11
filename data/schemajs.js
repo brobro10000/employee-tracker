@@ -24,10 +24,11 @@ function queryReturn(sql, message) {
         if (err) throw err;
         if (message == 'output') {
             console.table(results)
-        } else if ( message == 'return'){
-            return }
+        } else if (message == 'return') {
+            return
+        }
         else
-            console.log(`${message}`)          
+            console.log(`${message}`)
     });
 }
 
