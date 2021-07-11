@@ -155,4 +155,19 @@ function showQuery(table_name) {
     sql = `SELECT * FROM ${table_name}`
     queryReturn(sql, `output`)
 }
-module.exports = { department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery,pushData }
+
+// let myPromise = new Promise(function(myResolve, myReject) {
+//     // "Producing Code" (May take some time)
+//     let value = 'roles'
+
+//       myResolve(showQuery(value)); // when successful
+//       myReject();  // when error
+//     });
+    
+//     // "Consuming Code" (Must wait for a fulfilled Promise)
+//     myPromise.then(
+//       function(value) { /* code if successful */ },
+//       function(error) { /* code if some error */ }
+//     );
+
+module.exports = { /*myPromise,*/ department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables, showQuery,pushData }
