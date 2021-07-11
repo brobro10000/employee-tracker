@@ -5,7 +5,7 @@ const { response, variableResponse, respond } = require('../data/query')
 const { databaseName, tables, initializeDatabase, dropExistingTables, createAllTables, queryReturn } = require('../data/schemajs')
 const { department_name, title, salary, department_id, first_name, last_name, role_id, manager_id, populateAllTables } = require('../data/seedsjs')
 const choices = ['View All Employees', 'View All Departments', 'View All Roles', 'View All Employees by Department', 'View All Employees by Manager', 'View All Employees by Role',
-    'Add Department', 'Add Role', 'Add Employee', 'Update Employee','Delete Department', 'Load Default Database', 'Exit Program']
+    'Add Department', 'Add Role', 'Add Employee', 'Update Employee', 'Show Department Budget', 'Load Default Database', 'Exit Program']
 const edit = ['Edit Manager','Edit Role']
 const queryData = []
 const initialQuestion = [
@@ -129,6 +129,9 @@ function initialPrompt() {
                 if (choices[i].split(' ')[0] == 'Add') {
                     return addComponent(choices[i].split(' ')[1])
                 }
+                if (choices[i].split(' ')[0] == 'Show') {
+                    return showDepartmentBudget()
+                }
                 if (choices[i].split(' ')[0] == 'Delete') {
                     return deleteComponent(choices[i].split(' ')[1])
                 }
@@ -249,32 +252,7 @@ function addComponent(component) {
         }
     })
 }
-function deleteComponent(component){
-    i=0;
-    component.toLowerCase() == 'department' ? i = 0
-        : component.toLowerCase() == 'role' ? i = 1
-            : component.toLowerCase() == 'employee' ? i = 2
-                : console.log("ERROR! PLEASE TALK TO THE DATABASE ADMINISTRATOR, YOU SHOULDNT REACH THIS MESSAGE");
-    if(i == 0){
-        sql = response[1]
-        database.query(sql, function (err, results) {
-            if (err) throw err;
-            const department = []
-            results.forEach(element => {
-                departments.push(element.department_name)
-            })
-            const departmentDelete = [
-                {
-                    type: 'list',
-                    name: 'department',
-                    message: 'Which department would you like to delete.',
-                    choices: departments
-                }
-            ]
-            // inquirer.prompt(departmentDelete).then()
-        })
-    }
-}
+
 function editComponent() {
     var sql = `SELECT concat(first_name, ' ', last_name) AS Full_Name
               FROM employees`
@@ -356,5 +334,34 @@ function editComponent() {
 
         })
     });
+}
+function showDepartmentBudget() {
+    var sql = `SELECT departments.department_name FROM departments;`
+    database.query(sql, function (err, results) {
+        if (err)
+            throw err
+        var departments = []
+        results.forEach(element => {
+            departments.push(element.department_name)
+        })
+        const budgetPrompt = [
+            {
+                type: 'list',
+                name: 'department',
+                message: 'Select a Department to view its budget.',
+                choices: departments
+            }
+        ]
+        inquirer.prompt(budgetPrompt).then(data => {
+            console.log(data,departments[departments.indexOf(data.department)])
+            sql = `SELECT department_name AS Department , SUM(salary) AS "Total Budget"
+            FROM roles,departments,employees
+            WHERE department_id = ${departments.indexOf(data.department)+1}
+            AND role_id = roles.id
+            AND department_name = "${departments[departments.indexOf(data.department)]}";`
+            queryReturn(sql,'output')
+            return recallPrompt()
+        })
+    })
 }
 module.exports = { initialPrompt, recallPrompt }
