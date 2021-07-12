@@ -1,4 +1,4 @@
-# Th Employee Tracker
+# The Employee Tracker
 ![Image of Employee Tracker
 ](src/images/employeetrackerSS.PNG
 "Employee Homepage")
