@@ -1,3 +1,4 @@
+//Predetermined responses for showing the tables, tables use console.table package
 const response = 
 [
     `SELECT e.id as Id, e.first_name AS ' First Name ', e.last_name AS 'Last Name', title as Title, department_name AS Department, salary AS Salary, concat(m.first_name, ' ',m.last_name) AS Manager 
