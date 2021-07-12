@@ -1,7 +1,8 @@
+//All required variables and functions.
 const database = require('./connection');
 const tables = ['employees', 'roles', 'departments']
 const databaseName = 'employeeroster'
-
+//initializes database by dropping database and recreating and using it
 function initializeDatabase(databaseName) {
     sql = `DROP DATABASE IF EXISTS ${databaseName};`
     queryReturn(sql, `${databaseName} Removed`)
@@ -10,7 +11,7 @@ function initializeDatabase(databaseName) {
     sql = `USE ${databaseName};`
     queryReturn(sql, `${databaseName} Initialized`)
 }
-
+//removes all tables if they exist
 function dropExistingTables(tables) {
     let sql = ``
     for (var i = 0; i < tables.length;) {
@@ -18,7 +19,7 @@ function dropExistingTables(tables) {
         queryReturn(sql, `Cleared Table: ${sql.split(' ')[4].split(';')[0]}`)
     }
 }
-
+//used throughout the code, a quick way to either display a table with 'output', display a user inputting message with 'message' or perform an action with 'return'
 function queryReturn(sql, message) {
     database.query(sql, function (err, results) {
         if (err) throw err;
@@ -31,7 +32,7 @@ function queryReturn(sql, message) {
             console.log(`${message}`)
     });
 }
-
+//create the department table, returns message
 function createDepartmentTable() {
     var sql = `CREATE TABLE departments (
         id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +41,7 @@ function createDepartmentTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
-
+//create a role table, returns message
 function createRoleTable() {
     var sql = `CREATE TABLE roles (
         id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -52,7 +53,7 @@ function createRoleTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
-
+//create an employee table, returns message
 function createEmployeeTable() {
     var sql = `CREATE TABLE employees (
         id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -66,7 +67,7 @@ function createEmployeeTable() {
     `
     queryReturn(sql, `${sql.split(' ')[2]} table created.`)
 }
-
+//consolidates functions.
 function createAllTables() {
     createDepartmentTable();
     createRoleTable();

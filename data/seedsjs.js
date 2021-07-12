@@ -1,3 +1,4 @@
+//All the required values and functions. Did this before realizing that database.connect autofed the sql files. Repurposed into a default function.
 const database = require('./connection')
 const { queryReturn } = require('./schemajs')
 const Department = require('../lib/Department')
@@ -16,12 +17,13 @@ var departmentArray = []
 var roleArray = []
 var employeeArray = []
 const cTable = require('console.table');
-
+//empties array
 function clearArr() {
     departmentArray = [];
     roleArray = [];
     employeeArray = [];
 }
+//populates department into database, calls to populate array later
 function populateDepartment(department_name) {
     sql = `INSERT INTO departments (department_name)
     VALUES `
@@ -36,7 +38,7 @@ function populateDepartment(department_name) {
     sql = `SELECT * FROM departments`
     populateDepartmentArray(sql)
 }
-
+//populates department array
 function populateDepartmentArray(sql) {
     database.query(sql, function (err, results) {
         if (err) throw err;
@@ -46,7 +48,7 @@ function populateDepartmentArray(sql) {
         }
     });
 }
-
+//populates roles into database, calls to populate array later
 function populateRole(title, salary, department_id) {
     var j = 0;
     sql = `INSERT INTO roles (title,salary,department_id)
@@ -66,7 +68,7 @@ function populateRole(title, salary, department_id) {
     sql = `SELECT * FROM roles`
     populateRoleArray(sql)
 }
-
+//populates role array by calling the department by id
 function populateRoleArray(sql) {
     database.query(sql, function (err, results) {
         if (err) throw err;
@@ -75,7 +77,7 @@ function populateRoleArray(sql) {
         }
     });
 }
-
+//actually populates array based on department id
 function retrieveDepartmentById(id, passedResults, i, length) {
     sql = `SELECT * FROM departments WHERE id = ${id}`
     database.query(sql, function (err, results) {
@@ -84,7 +86,7 @@ function retrieveDepartmentById(id, passedResults, i, length) {
         pushData(roleArray, role)
     })
 }
-
+//Populates employee in the database, calls function to populate array
 function populateEmployee(first_name, last_name, role_id, manager_id) {
     sql = `INSERT INTO employees (first_name,last_name,role_id,manager_id)
     VALUES `
@@ -100,14 +102,14 @@ function populateEmployee(first_name, last_name, role_id, manager_id) {
     sql = `SELECT * FROM employees`
     populateEmployeeArray(sql)
 }
-
+//calls function to populate array based on role id
 function populateEmployeeArray(sql) {
     database.query(sql, function (err, results) {
         if (err) throw err;
         retrieveRoleById(results)
     });
 }
-
+//checks value of roles.id against role_id and passes appropriate data from there, populates array and returns a formated table form the class 
 function retrieveRoleById(passedResults) {
     sql = `SELECT department_name, title, salary, department_id, roles.id FROM departments RIGHT JOIN roles ON departments.id = roles.department_id`
     database.query(sql, function (err, results) {
@@ -127,14 +129,14 @@ function retrieveRoleById(passedResults) {
         console.table(employeeArray)
     })
 }
-
+//consolidated table to populate all arrays by clearing tables followed by calling appropriate functions, passing in the hard coded values
 function populateAllTables(department_name, title, salary, department_id, first_name, last_name, role_id, manager_id) {
     clearArr()
     populateDepartment(department_name);
     populateRole(title, salary, department_id)
     populateEmployee(first_name, last_name, role_id, manager_id)
 }
-
+//kind of useless functions below that was used for testing purposes
 function pushData(arr, data) {
     arr.push(data)
 }
