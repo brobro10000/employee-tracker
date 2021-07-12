@@ -71,10 +71,10 @@ This program allows you to keep track of your employees in your business using a
 # Why it Matters?
 Learning and using SQL is an efficient way to store, sort, filter and manipulate large quantities of data and present them in a efficient manner in a program or for yourself. CRUD or Create, Read, Update and Delete are the basic functions of persistent storage. Learning SQL and using it is vital for creating programs that utilize CRUD for a better user experience for those using the application, and the developer maintaining large amounts of data. 
 
-Watch my Employee Tracker in action! The image below links to a Youtube video of the demonstration of the employee tracker, or [Click Here](https://youtu.be/rct3pW8InJc)!
+Watch my Employee Tracker in action! The image below links to a Youtube video of the demonstration of the employee tracker, or [Click Here](https://www.youtube.com/watch?v=vpxfj77bQ-8)!
 
 [![Image of My Youtube Video of Module 12
 ](src/images/videoSS.PNG)
-](https://youtu.be/rct3pW8InJc)
+](https://www.youtube.com/watch?v=vpxfj77bQ-8)
 
 ## <center>We Hope to see you there!</center> ##
