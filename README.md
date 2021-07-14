@@ -1,4 +1,5 @@
 # Employee Database
+
 ![Image of Employee Tracker
 ](src/images/employeetrackerSS.PNG
 "Employee Homepage")
