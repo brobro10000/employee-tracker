@@ -1,10 +1,11 @@
-# The Employee Tracker
+# Employee Database
+
 ![Image of Employee Tracker
 ](src/images/employeetrackerSS.PNG
 "Employee Homepage")
 
 
-## **The Employee Tracker**
+## **The mySQL based Employee Database**
 This program allows you to keep track of your employees in your business using an SQL database. Using MySQL to organize the database, we can access informationa about or organization and its employees.
 
 - When the user navigates to the root folder, they simply type 'npm start' to initialize the database. On initialization they are presented with a series of options to view and manipulate the data in the database.
@@ -71,10 +72,11 @@ This program allows you to keep track of your employees in your business using a
 # Why it Matters?
 Learning and using SQL is an efficient way to store, sort, filter and manipulate large quantities of data and present them in a efficient manner in a program or for yourself. CRUD or Create, Read, Update and Delete are the basic functions of persistent storage. Learning SQL and using it is vital for creating programs that utilize CRUD for a better user experience for those using the application, and the developer maintaining large amounts of data. 
 
-Watch my Employee Tracker in action! The image below links to a Youtube video of the demonstration of the employee tracker, or [Click Here](https://www.youtube.com/watch?v=vpxfj77bQ-8)!
+Watch my employee database in action! 
 
-[![Image of My Youtube Video of Module 12
-](src/images/videoSS.PNG)
-](https://www.youtube.com/watch?v=vpxfj77bQ-8)
+The employee database in 2 minutes: [Click here!](https://youtu.be/E1kB1utLUyw)
+
+A detailed overview: [Click Here!](https://www.youtube.com/watch?v=vpxfj77bQ-8)
+
 
 ## <center>We Hope to see you there!</center> ##
