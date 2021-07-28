@@ -323,7 +323,7 @@ function editComponent() {
                         sql = `UPDATE employees
                         SET role_id = ${title.indexOf(roleData.employeeRole) + 1}
                         WHERE employees.id = ${employeeIndex + 1}`
-
+                        
                         queryReturn(sql, 'return')
                         queryReturn(response[5], 'output')
                         return recallPrompt()
